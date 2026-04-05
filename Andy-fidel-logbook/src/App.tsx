@@ -1,12 +1,16 @@
-import { useState } from 'react'
+import { Routes, Route } from 'react-router';
+import { HomePage } from './pages/Homepage';
+import { Header } from './pages/Header';
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
-    
+    <Routes>
+      <Route index element={< HomePage />}/>
+    </Routes>
+    <Header />
     </>
   )
 }
