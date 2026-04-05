@@ -3,18 +3,13 @@ import "./Header.css";
 export function Header() {
   return (
     <>
-      <div className="header-container">
-        <div className="left-section">
-          <h1 className="h1">The Andy-Fidel Portal</h1>
+      <nav className="bg-white flex items-center p-7">
+          <div className="w-130 ml-10 text-xl font-bold tracking-tighter text-blue-950">Andy-Fidel Portal</div>
+        <div className="flex-1 ">
+          <p className="inline-block">Log In</p>
+          <p className="inline-block ml-7">Visitors</p>
         </div>
-        <div className="middle-section">
-          <p className="log-in">Log In</p>
-          <p className="visitors">Visitors</p>
-        </div>
-        <div className="right-section">
-          <p>right Section</p>
-        </div>
-      </div>
+      </nav>
     </>
   );
 }
