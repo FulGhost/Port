@@ -1,14 +1,7 @@
-import { useState, type ChangeEvent } from "react";
 import { Header } from "./Header";
 import logImage from "../images/iuliu-illes-rZiVfk-tg6Y-unsplash.jpg";
 
 export function HomePage() {
-  const [inputValue, setInputValue] = useState<string>("");
-
-  const handleClick = () => {
-    console.log(inputValue);
-  };
-
   return (
     <>
       <Header />
@@ -39,10 +32,6 @@ export function HomePage() {
               <label>
                 Full Name <br />
                 <input
-                  value={inputValue}
-                  onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                    setInputValue(event.target.value)
-                  }
                   className="border border-gray-300 lg:w-202 md:w-100 w-110 h-10 rounded-lg pl-3"
                   type="text"
                   placeholder="Enter Your Name"
@@ -52,7 +41,6 @@ export function HomePage() {
 
             <div className="company-box mt-3">
               <label>
-                {" "}
                 Company or Organisation <br />
                 <input
                   className="border border-gray-300 lg:w-202 md:w-100 w-110 h-10 rounded-lg pl-3"
@@ -112,7 +100,6 @@ export function HomePage() {
             <div className="button-box mt-3">
               <button
                 className="bg-cyan-700 mt-2 h-10 text-white rounded-lg lg:w-190 md:w-100 w-110 hover:opacity-90 active:bg-cyan-800"
-                onClick={handleClick}
               >
                 Submit Check-in
               </button>
