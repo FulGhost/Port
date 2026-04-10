@@ -1,7 +1,37 @@
+import { useState } from "react";
 import { Header } from "./Header";
 import logImage from "../images/iuliu-illes-rZiVfk-tg6Y-unsplash.jpg";
 
 export function HomePage() {
+  const [visitorDetails, setVisitorDetails] = useState(
+    {
+      name: "",
+      organisation: "",
+      nature: "",
+      contact: "",
+      time: "",
+      tag: ""
+    }
+  );
+
+  function logInput(event) {
+    setVisitorDetails({...visitorDetails,
+      [event.target.name]: event.target.value
+    });
+  }
+
+  function handleClick() {
+    console.log(visitorDetails);
+    setVisitorDetails({
+      name: "",
+      organisation: "",
+      nature: "",
+      contact: "",
+      time: "",
+      tag: ""
+    });
+  }
+
   return (
     <>
       <Header />
@@ -32,9 +62,11 @@ export function HomePage() {
               <label>
                 Full Name <br />
                 <input
+                  name="name"
                   className="border border-gray-300 lg:w-202 md:w-100 w-110 h-10 rounded-lg pl-3"
-                  type="text"
                   placeholder="Enter Your Name"
+                  onChange={logInput}
+                  value={visitorDetails.name}
                 />
               </label>
             </div>
@@ -43,9 +75,11 @@ export function HomePage() {
               <label>
                 Company or Organisation <br />
                 <input
+                  name="organisation"
                   className="border border-gray-300 lg:w-202 md:w-100 w-110 h-10 rounded-lg pl-3"
-                  type="text"
                   placeholder="Which Company Are You From"
+                  onChange={logInput}
+                  value={visitorDetails.organisation}
                 />
               </label>
             </div>
@@ -56,9 +90,11 @@ export function HomePage() {
               <label>
                 Nature of Visit <br />
                 <input
+                  name="nature"
                   className="border border-gray-300 lg:w-202 md:w-100 w-110 h-10 rounded-lg pl-3"
-                  type="text"
                   placeholder="Narure of Visit"
+                  onChange={logInput}
+                  value={visitorDetails.nature}
                 />
               </label>
             </div>
@@ -68,9 +104,11 @@ export function HomePage() {
                 Contact
                 <br />
                 <input
+                  name="contact"
                   className="border border-gray-300 lg:w-100 md:w-100 w-110 h-10 rounded-lg pl-3"
-                  type="text"
                   placeholder="contact"
+                  onChange={logInput}
+                  value={visitorDetails.contact}
                 />
               </label>
 
@@ -78,9 +116,11 @@ export function HomePage() {
                 Time In
                 <br />
                 <input
+                  name="time"
                   className="border border-gray-300 lg:w-100 md:w-100 w-110 h-10 rounded-lg pl-3"
-                  type="text"
                   placeholder=""
+                  onChange={logInput}
+                  value={visitorDetails.time}
                 />
               </label>
             </div>
@@ -90,9 +130,11 @@ export function HomePage() {
                 Tag
                 <br />
                 <input
+                  name="tag"
                   className="border border-gray-300 lg:w-202 md:w-100 w-110 h-10 rounded-lg pl-3"
-                  type="text"
                   placeholder="Tag"
+                  onChange={logInput}
+                  value={visitorDetails.tag}
                 />
               </label>
             </div>
@@ -100,6 +142,7 @@ export function HomePage() {
             <div className="button-box mt-3">
               <button
                 className="bg-cyan-700 mt-2 h-10 text-white rounded-lg lg:w-190 md:w-100 w-110 hover:opacity-90 active:bg-cyan-800"
+                onClick={handleClick}
               >
                 Submit Check-in
               </button>
