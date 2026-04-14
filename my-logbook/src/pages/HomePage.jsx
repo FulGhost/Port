@@ -1,4 +1,4 @@
-import { Header } from "./Header";
+import { Header } from "../components/Header";
 import logImage from "../images/iuliu-illes-rZiVfk-tg6Y-unsplash.jpg";
 
 export function HomePage({visitorDetails, setVisitorDetails, visitorLogs, setVisitorLogs}) {
