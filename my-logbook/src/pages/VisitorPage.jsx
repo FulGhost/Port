@@ -1,7 +1,9 @@
-import { Header } from "./Header";
+import { Header } from "../components/Header";
+import { VisitorLog } from "../components/VisitorLog";
 
-export function VisitorPage({visitorLogs}) {
 
+// VisitorLogs is passed as a property to allow Visitorlog to use the prop
+export function VisitorPage({ visitorLogs }) {
   return (
     <>
       <Header />
@@ -43,22 +45,7 @@ export function VisitorPage({visitorLogs}) {
 
           <div className="body-right-side bg-white rounded-lg h-100 p-1 flex-1 flex-row overflow-y-auto">
 
-            {/* loop through visitor log and display them on the page */}
-            {visitorLogs.map((visitorLog) => {
-              return (
-                <div
-                className="details-container border-b text-gray-900 h-25 flex justify-between items-center mb-1 pl-2 pr-1"
-              >
-                <p className=" md:text-lg font-mono">{visitorLog.name}</p>
-                <p className="md:text-lg font-mono">{visitorLog.organisation}</p>
-                <p className="md:text-lg font-mono">{visitorLog.nature}</p>
-                <p className="md:text-lg font-mono">{visitorLog.time}</p>
-                <p className="md:text-lg font-mono">{visitorLog.contact}</p>
-                <p className="md:text-lg font-mono w-10">{visitorLog.tag}</p>
-                <button className=" rounded-sm font-mono w-25 border h-12 cursor-pointer hover:bg-lime-200 active:bg-black active:text-white ">In <br />Building</button>
-              </div>
-              )
-            })};
+            <VisitorLog visitorLogs={visitorLogs} />
               
           </div>
         </div>
