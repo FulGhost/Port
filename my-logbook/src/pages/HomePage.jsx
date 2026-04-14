@@ -1,27 +1,29 @@
-import { useState } from "react";
 import { Header } from "./Header";
 import logImage from "../images/iuliu-illes-rZiVfk-tg6Y-unsplash.jpg";
 
-export function HomePage() {
-  const [visitorDetails, setVisitorDetails] = useState(
-    {
-      name: "",
-      organisation: "",
-      nature: "",
-      contact: "",
-      time: "",
-      tag: ""
-    }
-  );
-
+export function HomePage({visitorDetails, setVisitorDetails, visitorLogs, setVisitorLogs}) {
+  
+// function passed into onChange in the input elements
+// Adds data of input to visitor details object
   function logInput(event) {
-    setVisitorDetails({...visitorDetails,
+    setVisitorDetails({
+      ...visitorDetails,
       [event.target.name]: event.target.value
-    });
+    })
   }
 
+  // function passed to onClick in submit button
+  // Adds visitor details object to visitor log array 
   function handleClick() {
-    console.log(visitorDetails);
+  setVisitorLogs([
+    ...visitorLogs,
+    {
+      ...visitorDetails,
+      id: crypto.randomUUID()
+    }
+  ]);
+
+// Resets data in input boxes to empty
     setVisitorDetails({
       name: "",
       organisation: "",
@@ -109,6 +111,7 @@ export function HomePage() {
                   placeholder="contact"
                   onChange={logInput}
                   value={visitorDetails.contact}
+                  size='10'
                 />
               </label>
 
