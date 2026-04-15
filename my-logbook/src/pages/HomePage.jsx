@@ -1,37 +1,69 @@
+import { useEffect, useState } from "react";
 import { Header } from "../components/Header";
 import logImage from "../images/iuliu-illes-rZiVfk-tg6Y-unsplash.jpg";
 
-export function HomePage({visitorDetails, setVisitorDetails, visitorLogs, setVisitorLogs}) {
-  
-// function passed into onChange in the input elements
-// Adds data of input to visitor details object
+export function HomePage({
+  visitorDetails,
+  setVisitorDetails,
+  visitorLogs,
+  setVisitorLogs,
+}) {
+  const [currentTime, setCurrentTime] = useState("");
+
+  useEffect(() => {
+    function updateTime() {
+      setCurrentTime(
+        new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        }),
+      );
+    }
+
+    updateTime();
+
+    const timer = setInterval(updateTime, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  // function passed into onChange in the input elements
+  // Adds data of input to visitor details object
   function logInput(event) {
     setVisitorDetails({
       ...visitorDetails,
-      [event.target.name]: event.target.value
-    })
+      [event.target.name]: event.target.value,
+    });
   }
 
   // function passed to onClick in submit button
-  // Adds visitor details object to visitor log array 
+  // Adds visitor details object to visitor log array
   function handleClick() {
-  setVisitorLogs([
-    ...visitorLogs,
-    {
-      ...visitorDetails,
-      id: crypto.randomUUID(),
-      status: 'in-building'
-    }
-  ]);
+    const timeIn = new Date().toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
 
-// Resets data in input boxes to empty
+    setVisitorLogs([
+      ...visitorLogs,
+      {
+        ...visitorDetails,
+        time: timeIn,
+        id: crypto.randomUUID(),
+        status: "in-building",
+      },
+    ]);
+
+    // Resets data in input boxes to empty
     setVisitorDetails({
       name: "",
       organisation: "",
       nature: "",
       contact: "",
       time: "",
-      tag: ""
+      tag: "",
     });
   }
 
@@ -112,7 +144,6 @@ export function HomePage({visitorDetails, setVisitorDetails, visitorLogs, setVis
                   placeholder="contact"
                   onChange={logInput}
                   value={visitorDetails.contact}
-                  size='10'
                 />
               </label>
 
@@ -121,10 +152,9 @@ export function HomePage({visitorDetails, setVisitorDetails, visitorLogs, setVis
                 <br />
                 <input
                   name="time"
-                  className="border border-gray-300 lg:w-100 md:w-100 w-110 h-10 rounded-lg pl-3"
-                  placeholder=""
-                  onChange={logInput}
-                  value={visitorDetails.time}
+                  className="bg-gray-200 lg:w-100 md:w-100 w-110 h-10 rounded-lg pl-3"
+                  value={currentTime}
+                  readOnly
                 />
               </label>
             </div>
@@ -139,6 +169,8 @@ export function HomePage({visitorDetails, setVisitorDetails, visitorLogs, setVis
                   placeholder="Tag"
                   onChange={logInput}
                   value={visitorDetails.tag}
+                  maxLength={3}
+                  type="number"
                 />
               </label>
             </div>
