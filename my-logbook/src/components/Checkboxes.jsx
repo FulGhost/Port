@@ -1,38 +1,33 @@
-import { useState } from "react";
-
-export function CheckBoxes({visitorLogs}) {
-  const [isSignedOut, setIsSignedOut] = useState(false);
-
-  const filtered = visitorLogs.filter((visitorlog) => {
-
-  })
-
-  function handleSignedIn() {
-    setIsSignedOut(!isSignedOut);
-    console.log("i worked");
+export function CheckBoxes({selectedFilter, setSelectedFilter}) {
+  function handleSignedOutChange() {
+    if (selectedFilter === "signed-out") {
+      setSelectedFilter("all");
+    } else {
+      setSelectedFilter("signed-out");
+    }
   }
 
-  const [inBuilding, setInBuilding] = useState(false);
-
-  function handleInBuilding() {
-    setInBuilding(!inBuilding)
-    console.log('kpoyeke');
+  function handleInBuildingChange() {
+    if (selectedFilter === "in-building") {
+      setSelectedFilter("all");
+    } else {
+      setSelectedFilter("in-building");
+    }
   }
-
   return (
     <>
       <label className="block ml-5 mb-5">
         <input type="checkbox"
-         checked={isSignedOut} 
-         onChange={handleSignedIn} />
-        Signed In
+         checked={selectedFilter === "signed-out"} 
+         onChange={handleSignedOutChange} />
+        Signed Out
       </label>
 
       <label className="block ml-5">
         <input
          type="checkbox"
-         checked={inBuilding}
-         onChange={handleInBuilding}
+         checked={selectedFilter === "in-building"}
+         onChange={handleInBuildingChange}
          />
         In Building
       </label>

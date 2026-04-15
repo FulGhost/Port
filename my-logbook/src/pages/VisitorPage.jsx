@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Header } from "../components/Header";
 import { VisitorLog } from "../components/VisitorLog";
 import { Calendar } from "../components/Calendar";
@@ -5,7 +6,16 @@ import { CheckBoxes } from "../components/Checkboxes";
 
 
 // VisitorLogs is passed as a property to allow Visitorlog to use the prop
-export function VisitorPage({ visitorLogs }) {
+export function VisitorPage({ visitorLogs, setVisitorLogs }) {
+    const [selectedFilter, setSelectedFilter] = useState("all");
+
+     const displayedLogs =
+    selectedFilter === "all"
+      ? visitorLogs
+      : visitorLogs.filter((visitorLog) => {
+          return visitorLog.status === selectedFilter;
+        });
+
   return (
     <>
       <Header />
@@ -19,7 +29,10 @@ export function VisitorPage({ visitorLogs }) {
           </div>
 
           <div className="bg-amber-50 h-45 rounded-sm pt-5">
-            <CheckBoxes visitorLogs={visitorLogs}/>
+            <CheckBoxes 
+            selectedFilter={selectedFilter}
+              setSelectedFilter={setSelectedFilter}
+              />
           </div>
 
         </div>
@@ -55,7 +68,7 @@ export function VisitorPage({ visitorLogs }) {
 
           <div className="body-right-side bg-white rounded-lg h-100 p-1 flex-1 flex-row overflow-y-auto">
 
-            <VisitorLog visitorLogs={visitorLogs} />
+            <VisitorLog visitorLogs={displayedLogs} setVisitorLogs={setVisitorLogs}/>
               
           </div>
         </div>

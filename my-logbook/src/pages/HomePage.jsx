@@ -19,7 +19,8 @@ export function HomePage({visitorDetails, setVisitorDetails, visitorLogs, setVis
     ...visitorLogs,
     {
       ...visitorDetails,
-      id: crypto.randomUUID()
+      id: crypto.randomUUID(),
+      status: 'in-building'
     }
   ]);
 
