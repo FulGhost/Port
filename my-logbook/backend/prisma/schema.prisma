@@ -22,4 +22,6 @@ model VisitorLog {
   timeIn       DateTime @default(now())
   timeOut      DateTime?
   status       String   @default("in-building")
+
+  @@index([timeIn])
 }

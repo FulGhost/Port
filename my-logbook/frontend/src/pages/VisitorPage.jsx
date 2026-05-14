@@ -24,11 +24,11 @@ export function VisitorPage({ visitorLogs, setVisitorLogs }) {
 
         <div className="left-side h-145 w-75 p-2">
           
-          <div className="bg-amber-100 h-60 mb-4 rounded-sm">
+          <div className="bg-amber-100 h-75 mb-4 rounded-lg">
             <Calendar />
           </div>
 
-          <div className="bg-amber-50 h-45 rounded-sm pt-5">
+          <div className="bg-amber-50 h-45 rounded-sm pt-5 mt-12">
             <CheckBoxes 
             selectedFilter={selectedFilter}
               setSelectedFilter={setSelectedFilter}
