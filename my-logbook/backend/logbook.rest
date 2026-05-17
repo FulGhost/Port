@@ -1,0 +1,2 @@
+### GET LOGS FROM /VISITORS
+GET http://localhost/visitors

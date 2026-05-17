@@ -1,0 +1,17 @@
+### GET TEST FROM /TEST
+GET http://localhost:9000/test
+
+### GET from /API/VISITORS
+GET http://localhost:9000/api/visitorlogs
+
+### POST to /API/VISITORS
+POST http://localhost:9000/api/visitorlogs
+content-type: application/json
+
+{
+  "name": "Jude Fiifi",
+  "organisation": "Get More Money inc",
+  "nature": "Test",
+  "contact": "0208709187",
+  "tag": "2"
+}
