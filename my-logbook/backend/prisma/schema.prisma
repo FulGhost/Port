@@ -18,7 +18,7 @@ model VisitorLog {
   organisation String
   nature       String
   contact      String
-  tag          Integer
+  tag          String
   timeIn       DateTime @default(now())
   timeOut      DateTime?
   status       String   @default("in-building")

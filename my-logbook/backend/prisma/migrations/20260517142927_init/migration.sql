@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "VisitorLog" ALTER COLUMN "contact" SET DATA TYPE TEXT,
+ALTER COLUMN "tag" SET DATA TYPE TEXT;

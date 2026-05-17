@@ -15,3 +15,6 @@ content-type: application/json
   "contact": "0208709187",
   "tag": "2"
 }
+
+### DELETE visitor log by ID
+DELETE http://localhost:9000/api/visitorlogs/693fbfd9-6660-46e3-a21f-6d95a124b797
