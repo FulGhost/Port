@@ -22,7 +22,7 @@ router.get("/visitorlogs", async (req, res) => {
           tag: true,
           timeIn: true,
           timeOut: true,
-          // status: true,
+          status: true,
         },
       });
 
