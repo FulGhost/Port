@@ -20,8 +20,9 @@ router.get("/visitorlogs", async (req, res) => {
           nature: true,
           contact: true,
           tag: true,
+          timeIn: true,
           timeOut: true,
-          status: true,
+          // status: true,
         },
       });
 

@@ -1,14 +1,9 @@
-import axios from 'axios'
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { Header } from "../components/Header";
 import logImage from "../images/iuliu-illes-rZiVfk-tg6Y-unsplash.jpg";
 
-export function HomePage({
-  visitorDetails,
-  setVisitorDetails,
-  // visitorLogs,
-  // setVisitorLogs,
-}) {
+export function HomePage({ visitorDetails, setVisitorDetails, getLogs }) {
   const [currentTime, setCurrentTime] = useState("");
 
   useEffect(() => {
@@ -40,34 +35,18 @@ export function HomePage({
 
   // function passed to onClick in submit button
   // Adds visitor details object to visitor log array
-  function handleClick() {
-    const sendLogs =  async () => {
-      await axios.post('/api/visitorlogs', {
-        name: visitorDetails.name,
-        organisation: visitorDetails.organisation,
-        nature: visitorDetails.nature,
-        contact: visitorDetails.contact,
-        tag: visitorDetails.tag
-      })
-    }
-    sendLogs()
-  
-    // const timeIn = new Date().toLocaleTimeString([], {
-    //   hour: "2-digit",
-    //   minute: "2-digit",
-    //   second: "2-digit",
-    // });
+  async function handleClick() {
+    await axios.post("/api/visitorlogs", {
+      name: visitorDetails.name,
+      organisation: visitorDetails.organisation,
+      nature: visitorDetails.nature,
+      contact: visitorDetails.contact,
+      tag: visitorDetails.tag,
+    });
 
-    // setVisitorLogs([
-    //   ...visitorLogs,
-    //   {
-    //     ...visitorDetails,
-    //     time: timeIn,
-    //     id: crypto.randomUUID(),
-    //     status: "in-building",
-    //   },
-    // ]);
+    await getLogs();
 
+   
     // Resets data in input boxes to empty
     setVisitorDetails({
       name: "",
