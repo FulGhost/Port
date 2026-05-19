@@ -13,5 +13,11 @@ content-type: application/json
   "tag": "2"
 }
 
+### UPDATE visitor log / sign visitor out by ID
+PUT http://localhost:9000/api/visitorlogs/ee7f1510-7cd1-4bfe-9946-97a3d2950beb
+content-type: application/json
+
+{}
+
 ### DELETE visitor log by ID
 DELETE http://localhost:9000/api/visitorlogs/0c912b83-01b8-429c-9b28-12359e52d593

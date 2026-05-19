@@ -6,7 +6,7 @@ import { CheckBoxes } from "../components/Checkboxes";
 
 
 // VisitorLogs is passed as a property to allow Visitorlog to use the prop
-export function VisitorPage({ visitorLogs, setVisitorLogs }) {
+export function VisitorPage({ visitorLogs, setVisitorLogs, getLogs }) {
     const [selectedFilter, setSelectedFilter] = useState("all");
 
      const displayedLogs =
@@ -68,7 +68,7 @@ export function VisitorPage({ visitorLogs, setVisitorLogs }) {
 
           <div className="body-right-side bg-white rounded-lg h-100 p-1 flex-1 flex-row overflow-y-auto">
 
-            <VisitorLog visitorLogs={displayedLogs} setVisitorLogs={setVisitorLogs}/>
+            <VisitorLog visitorLogs={displayedLogs} setVisitorLogs={setVisitorLogs} getLogs={getLogs}/>
               
           </div>
         </div>

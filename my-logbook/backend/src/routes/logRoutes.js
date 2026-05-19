@@ -95,7 +95,7 @@ router.post("/visitorlogs", async (req, res) => {
 
 //Updates sign in status
 router.put("/visitorlogs/:id", async (req, res) => {
-try {
+  try {
     const { id } = req.params;
 
     const updatedVisitorLog = await prisma.visitorLog.update({
@@ -113,6 +113,7 @@ try {
         nature: true,
         contact: true,
         tag: true,
+        timeIn: true,
         timeOut: true,
         status: true,
       },

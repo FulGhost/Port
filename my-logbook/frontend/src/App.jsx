@@ -54,6 +54,7 @@ export function App() {
               setVisitorDetails={setVisitorDetails}
               visitorLogs={visitorLogs}
               setVisitorLogs={setVisitorLogs}
+              getLogs={getLogs}
             />
           }
         />
