@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Routes, Route } from "react-router";
 import { HomePage } from "./pages/HomePage";
 import { VisitorPage } from "./pages/VisitorPage";
@@ -19,16 +19,17 @@ export function App() {
   //empty array that saves visitor details object
   const [visitorLogs, setVisitorLogs] = useState([]);
 
-  const getLogs = async () => {
-    const response = await axios.get("/api/visitorlogs");
+  const getLogs = async (date) => {
+    const response = await axios.get("/api/visitorlogs", {
+    params: date ? { date } : {},
+  });
     setVisitorLogs(response.data);
-    console.log(response.data)
   };
 
-  useEffect(() => {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-    getLogs();
-  }, []);
+  // useEffect(() => {
+  //     // eslint-disable-next-line react-hooks/set-state-in-effect
+  //   getLogs();
+  // }, []);
 
   //states lifted up from homepage to app and passes as a property
   return (

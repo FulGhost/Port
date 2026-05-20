@@ -29,10 +29,10 @@ router.get("/visitorlogs", async (req, res) => {
       return res.json(visitorLogs);
     }
 
-    const startOfDay = new Date(`${date}T00:00:00.000Z`);
+    const startOfDay = new Date(`${date}T00:00:00`);
     const endOfDay = new Date(startOfDay);
 
-    endOfDay.setUTCDate(endOfDay.getUTCDate() + 1);
+    endOfDay.setDate(endOfDay.getDate() + 1);
 
     const visitorLogs = await prisma.visitorLog.findMany({
       where: {
@@ -51,6 +51,7 @@ router.get("/visitorlogs", async (req, res) => {
         nature: true,
         contact: true,
         tag: true,
+        timeIn: true,
         timeOut: true,
         status: true,
       },

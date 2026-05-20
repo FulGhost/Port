@@ -1,40 +1,54 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Header } from "../components/Header";
 import { VisitorLog } from "../components/VisitorLog";
 import { Calendar } from "../components/Calendar";
 import { CheckBoxes } from "../components/Checkboxes";
 
-
 // VisitorLogs is passed as a property to allow Visitorlog to use the prop
 export function VisitorPage({ visitorLogs, setVisitorLogs, getLogs }) {
-    const [selectedFilter, setSelectedFilter] = useState("all");
+  const [selectedFilter, setSelectedFilter] = useState("all");
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
-     const displayedLogs =
+  const displayedLogs =
     selectedFilter === "all"
       ? visitorLogs
       : visitorLogs.filter((visitorLog) => {
           return visitorLog.status === selectedFilter;
         });
 
+  function getDateKey(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+  }
+
+  function handleDateSelect(date) {
+    setSelectedDate(date);
+    getLogs(getDateKey(date));
+  }
+
+  useEffect(() => {
+  getLogs(getDateKey(selectedDate));
+}, []);
+
   return (
     <>
       <Header />
 
       <div className="page-body flex ">
-
         <div className="left-side h-145 w-75 p-2">
-          
           <div className="bg-amber-100 h-75 mb-4 rounded-lg">
-            <Calendar />
+            <Calendar onDateSelect={handleDateSelect} selectedDate={selectedDate}/>
           </div>
 
           <div className="bg-amber-50 h-45 rounded-sm pt-5 mt-12">
-            <CheckBoxes 
-            selectedFilter={selectedFilter}
+            <CheckBoxes
+              selectedFilter={selectedFilter}
               setSelectedFilter={setSelectedFilter}
-              />
+            />
           </div>
-
         </div>
 
         <div className="right-page-side h-145 flex-1 p-2 min-w-8">
@@ -54,22 +68,38 @@ export function VisitorPage({ visitorLogs, setVisitorLogs, getLogs }) {
                 Search
               </button>
             </div>
-          </div> 
+          </div>
 
           <div className="detail-header h-9 mb-0.5 flex justify-between pr-2 pl-2 items-center">
-            <p className=" md:text-lg font-bold tracking-tighter text-primary leading-tight">Visitor Name</p>
-            <p className=" md:text-lg font-bold tracking-tighter text-primary leading-tight">Company or From</p>
-            <p className=" md:text-lg font-bold tracking-tighter text-primary leading-tight">Purpose</p>
-            <p className=" md:text-lg font-bold tracking-tighter text-primary leading-tight">Time In</p>
-            <p className=" md:text-lg font-bold tracking-tighter text-primary leading-tight">Contact</p>
-            <p className=" md:text-lg font-bold tracking-tighter text-primary leading-tight">Tag Num</p>
-            <p className=" md:text-lg font-bold tracking-tighter text-primary leading-tight">Action</p>
+            <p className=" md:text-lg font-bold tracking-tighter text-primary leading-tight">
+              Visitor Name
+            </p>
+            <p className=" md:text-lg font-bold tracking-tighter text-primary leading-tight">
+              Company or From
+            </p>
+            <p className=" md:text-lg font-bold tracking-tighter text-primary leading-tight">
+              Purpose
+            </p>
+            <p className=" md:text-lg font-bold tracking-tighter text-primary leading-tight">
+              Time In
+            </p>
+            <p className=" md:text-lg font-bold tracking-tighter text-primary leading-tight">
+              Contact
+            </p>
+            <p className=" md:text-lg font-bold tracking-tighter text-primary leading-tight">
+              Tag Num
+            </p>
+            <p className=" md:text-lg font-bold tracking-tighter text-primary leading-tight">
+              Action
+            </p>
           </div>
 
           <div className="body-right-side bg-white rounded-lg h-100 p-1 flex-1 flex-row overflow-y-auto">
-
-            <VisitorLog visitorLogs={displayedLogs} setVisitorLogs={setVisitorLogs} getLogs={getLogs}/>
-              
+            <VisitorLog
+              visitorLogs={displayedLogs}
+              setVisitorLogs={setVisitorLogs}
+              getLogs={() => getLogs(getDateKey(selectedDate))}
+            />
           </div>
         </div>
       </div>
