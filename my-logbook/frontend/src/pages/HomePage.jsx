@@ -5,6 +5,7 @@ import logImage from "../images/iuliu-illes-rZiVfk-tg6Y-unsplash.jpg";
 
 export function HomePage({ visitorDetails, setVisitorDetails, getLogs }) {
   const [currentTime, setCurrentTime] = useState("");
+  const [showErrors, setShowErrors] = useState(false);
 
   useEffect(() => {
     function updateTime() {
@@ -36,6 +37,18 @@ export function HomePage({ visitorDetails, setVisitorDetails, getLogs }) {
   // function passed to onClick in submit button
   // Adds visitor details object to visitor log array
   async function handleClick() {
+    setShowErrors(true);
+
+    if (
+      !visitorDetails.name ||
+      !visitorDetails.organisation ||
+      !visitorDetails.nature ||
+      !visitorDetails.contact ||
+      !visitorDetails.tag
+    ) {
+      return;
+    }
+
     await axios.post("/api/visitorlogs", {
       name: visitorDetails.name,
       organisation: visitorDetails.organisation,
@@ -46,7 +59,6 @@ export function HomePage({ visitorDetails, setVisitorDetails, getLogs }) {
 
     await getLogs();
 
-   
     // Resets data in input boxes to empty
     setVisitorDetails({
       name: "",
@@ -89,7 +101,11 @@ export function HomePage({ visitorDetails, setVisitorDetails, getLogs }) {
                 Full Name <br />
                 <input
                   name="name"
-                  className="border border-gray-300 lg:w-202 md:w-100 w-110 h-10 rounded-lg pl-3"
+                  className={`border border-gray-300 lg:w-202 md:w-100 w-110 h-10 rounded-lg pl-3 ${
+                    showErrors && !visitorDetails.name
+                      ? "placeholder:text-red-500"
+                      : ""
+                  }`}
                   placeholder="Enter Your Name"
                   onChange={logInput}
                   value={visitorDetails.name}
@@ -102,7 +118,11 @@ export function HomePage({ visitorDetails, setVisitorDetails, getLogs }) {
                 Company or Organisation <br />
                 <input
                   name="organisation"
-                  className="border border-gray-300 lg:w-202 md:w-100 w-110 h-10 rounded-lg pl-3"
+                  className={`border border-gray-300 lg:w-202 md:w-100 w-110 h-10 rounded-lg pl-3 ${
+                    showErrors && !visitorDetails.organisation
+                      ? "placeholder:text-red-500"
+                      : ""
+                  }`}
                   placeholder="Which Company Are You From"
                   onChange={logInput}
                   value={visitorDetails.organisation}
@@ -117,8 +137,12 @@ export function HomePage({ visitorDetails, setVisitorDetails, getLogs }) {
                 Nature of Visit <br />
                 <input
                   name="nature"
-                  className="border border-gray-300 lg:w-202 md:w-100 w-110 h-10 rounded-lg pl-3"
-                  placeholder="Narure of Visit"
+                  className={`border border-gray-300 lg:w-202 md:w-100 w-110 h-10 rounded-lg pl-3 ${
+                    showErrors && !visitorDetails.nature
+                      ? "placeholder:text-red-500"
+                      : ""
+                  }`}
+                  placeholder="Nature of Visit"
                   onChange={logInput}
                   value={visitorDetails.nature}
                 />
@@ -131,7 +155,11 @@ export function HomePage({ visitorDetails, setVisitorDetails, getLogs }) {
                 <br />
                 <input
                   name="contact"
-                  className="border border-gray-300 lg:w-100 md:w-100 w-110 h-10 rounded-lg pl-3"
+                  className={`border border-gray-300 lg:w-100 md:w-100 w-110 h-10 rounded-lg pl-3 ${
+                    showErrors && !visitorDetails.contact
+                      ? "placeholder:text-red-500"
+                      : ""
+                  }`}
                   placeholder="contact"
                   onChange={logInput}
                   value={visitorDetails.contact}
@@ -156,7 +184,11 @@ export function HomePage({ visitorDetails, setVisitorDetails, getLogs }) {
                 <br />
                 <input
                   name="tag"
-                  className="border border-gray-300 lg:w-202 md:w-100 w-110 h-10 rounded-lg pl-3"
+                  className={`border border-gray-300 lg:w-202 md:w-100 w-110 h-10 rounded-lg pl-3 ${
+                    showErrors && !visitorDetails.tag
+                      ? "placeholder:text-red-500"
+                      : ""
+                  }`}
                   placeholder="Tag"
                   onChange={logInput}
                   value={visitorDetails.tag}
