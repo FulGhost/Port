@@ -88,6 +88,7 @@ router.post("/visitorlogs", async (req, res) => {
 
     res.status(201).json(visitorLog);
   } catch (error) {
+    console.error("POST /visitorlogs error:", error);
     res.status(500).json({
       message: "Could not create visitor log",
     });
