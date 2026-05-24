@@ -2,7 +2,7 @@ import express from 'express';
 import logRoutes from './routes/logRoutes.js'
 
 const app = express()
-const PORT = 9000
+const PORT = process.env.PORT || 7000
 
 
 // Middleware
