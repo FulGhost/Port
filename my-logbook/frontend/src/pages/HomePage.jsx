@@ -68,6 +68,8 @@ export function HomePage({ visitorDetails, setVisitorDetails, getLogs }) {
       time: "",
       tag: "",
     });
+
+    setShowErrors(false);
   }
 
   return (
