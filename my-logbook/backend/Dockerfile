@@ -1,23 +1,15 @@
-# Use an official node.js runtime as a parent image
 FROM node:22-alpine
 
-# Set the working dir in the container
 WORKDIR /app
 
-# Copy the package.json and package-lock.json files to the container
-COPY package*.json .
+COPY package*.json ./
 
-# Install the dependencies
-RUN npm install
+RUN npm ci
 
-# Copy the rest of the application code
 COPY . .
 
-# Generate Prisma client
 RUN npx prisma generate
 
-# Expose the port that the app runs on
-EXPOSE 7000
+EXPOSE 9000
 
-# Define the command to run application
-CMD ["node", "./src/server.js"]
+CMD ["sh", "-c", "npx prisma migrate deploy && node ./src/server.js"]

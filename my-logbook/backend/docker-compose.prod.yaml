@@ -1,0 +1,19 @@
+services:
+  backend:
+    build: .
+    container_name: logbook-backend
+    restart: always
+    environment:
+      DATABASE_URL: ${RDS_DATABASE_URL:?Set RDS_DATABASE_URL to your RDS PostgreSQL connection string}
+      NODE_ENV: production
+      PORT: 9000
+
+  frontend:
+    build:
+      context: ../frontend
+    container_name: logbook-frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
