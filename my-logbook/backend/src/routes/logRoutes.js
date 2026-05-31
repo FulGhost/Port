@@ -7,9 +7,13 @@ const router = express.Router();
 router.get("/visitorlogs", async (req, res) => {
   try {
     const { date } = req.query;
+    const organisationId = req.organisation.id;
 
     if (!date) {
       const visitorLogs = await prisma.visitorLog.findMany({
+        where: {
+          organisationId,
+        },
         orderBy: {
           timeIn: "desc",
         },
@@ -36,6 +40,7 @@ router.get("/visitorlogs", async (req, res) => {
 
     const visitorLogs = await prisma.visitorLog.findMany({
       where: {
+        organisationId,
         timeIn: {
           gte: startOfDay,
           lt: endOfDay,
@@ -69,6 +74,7 @@ router.get("/visitorlogs", async (req, res) => {
 router.post("/visitorlogs", async (req, res) => {
   try {
     const { name, organisation, nature, contact, tag } = req.body;
+    const organisationId = req.organisation.id;
 
     if (!name || !organisation || !nature || !contact || !tag) {
       return res.status(400).json({
@@ -83,6 +89,7 @@ router.post("/visitorlogs", async (req, res) => {
         nature,
         contact,
         tag,
+        organisationId,
       },
     });
 
@@ -99,14 +106,29 @@ router.post("/visitorlogs", async (req, res) => {
 router.put("/visitorlogs/:id", async (req, res) => {
   try {
     const { id } = req.params;
+    const organisationId = req.organisation.id;
 
-    const updatedVisitorLog = await prisma.visitorLog.update({
+    const updatedVisitorLog = await prisma.visitorLog.updateMany({
       where: {
-        id: id,
+        id,
+        organisationId,
       },
       data: {
         status: "signed-out",
         timeOut: new Date(),
+      },
+    });
+
+    if (updatedVisitorLog.count === 0) {
+      return res.status(404).json({
+        message: "Visitor log not found",
+      });
+    }
+
+    const visitorLog = await prisma.visitorLog.findFirst({
+      where: {
+        id,
+        organisationId,
       },
       select: {
         id: true,
@@ -121,7 +143,7 @@ router.put("/visitorlogs/:id", async (req, res) => {
       },
     });
 
-    res.json(updatedVisitorLog);
+    res.json(visitorLog);
   } catch (error) {
     res.status(500).json({
       message: "Could not sign visitor out",
@@ -133,12 +155,20 @@ router.put("/visitorlogs/:id", async (req, res) => {
 router.delete("/visitorlogs/:id", async (req, res) => {
   try {
     const { id } = req.params;
+    const organisationId = req.organisation.id;
 
-    await prisma.visitorLog.delete({
+    const deletedVisitorLog = await prisma.visitorLog.deleteMany({
       where: {
-        id: id,
+        id,
+        organisationId,
       },
     });
+
+    if (deletedVisitorLog.count === 0) {
+      return res.status(404).json({
+        message: "Visitor log not found",
+      });
+    }
 
     res.json({
       message: "Visitor log deleted successfully",

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Header } from "../components/Header";
-import logImage from "../images/iuliu-illes-rZiVfk-tg6Y-unsplash.jpg";
+import logImage from "../../public/images/iuliu-illes-rZiVfk-tg6Y-unsplash.jpg";
 
 export function HomePage({ visitorDetails, setVisitorDetails, getLogs }) {
   const [currentTime, setCurrentTime] = useState("");
@@ -97,7 +97,7 @@ export function HomePage({ visitorDetails, setVisitorDetails, getLogs }) {
         </div>
 
         <div className="right-side pt-2 pl-1 pr-1">
-          <div className="bg-white rounded-lg pt-3 pl-6 lg:w-230 h-135">
+          <div className="bg-white/30 backdrop-blur-md border border-white/40 rounded-lg pt-3 pl-6 lg:w-230 h-135">
             <div className="name-box mt-3 ">
               <label>
                 Full Name <br />

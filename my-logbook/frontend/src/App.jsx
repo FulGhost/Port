@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Routes, Route } from "react-router";
 import { HomePage } from "./pages/HomePage";
 import { VisitorPage } from "./pages/VisitorPage";
+import { LandingPage } from "./pages/LandingPage";
 import "./App.css";
 
 export function App() {
@@ -59,6 +60,7 @@ export function App() {
             />
           }
         />
+        <Route path="landingpage" element={<LandingPage />}/>
       </Routes>
     </>
   );

@@ -22,6 +22,18 @@ model VisitorLog {
   timeIn       DateTime @default(now())
   timeOut      DateTime?
   status       String   @default("in-building")
+  organisationId String?
+  accountOrganisation Organisation? @relation(fields: [organisationId], references: [id], onDelete: Cascade)
 
   @@index([timeIn])
+  @@index([organisationId, timeIn])
+}
+
+model Organisation {
+  id          String       @id @default(uuid())
+  username    String?
+  email       String       @unique
+  password    String
+  createdAt   DateTime     @default(now())
+  visitorLogs VisitorLog[]
 }

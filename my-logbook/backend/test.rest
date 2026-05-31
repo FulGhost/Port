@@ -1,9 +1,13 @@
+@token = {{login.response.body.token}}
+
 ### GET from /API/VISITORS
 GET http://localhost:9000/api/visitorlogs
+Authorization: Bearer {{token}}
 
 ### POST to /API/VISITORS
 POST http://localhost:9000/api/visitorlogs
 content-type: application/json
+Authorization: Bearer {{token}}
 
 {
   "name": "Jude Fiifi",
@@ -16,8 +20,31 @@ content-type: application/json
 ### UPDATE visitor log / sign visitor out by ID
 PUT http://localhost:9000/api/visitorlogs/ee7f1510-7cd1-4bfe-9946-97a3d2950beb
 content-type: application/json
+Authorization: Bearer {{token}}
 
 {}
 
 ### DELETE visitor log by ID
 DELETE http://localhost:9000/api/visitorlogs/0c912b83-01b8-429c-9b28-12359e52d593
+Authorization: Bearer {{token}}
+
+
+### Add new organisation
+POST http://localhost:9000/auth/signup
+Content-Type: application/json
+
+{
+  "username": "Redorganisation",
+  "email": "redorganisation@example.com",
+  "password": "Yabadabado"
+}
+
+### Login organisation
+# @name login
+POST http://localhost:9000/auth/login
+Content-Type: application/json
+
+{
+  "email": "redorganisation@example.com",
+  "password": "Yabadabado"
+}
