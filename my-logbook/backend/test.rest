@@ -30,7 +30,7 @@ Authorization: Bearer {{token}}
 
 
 ### Add new organisation
-POST http://localhost:9000/auth/signup
+POST http://localhost:5173/auth/signup
 Content-Type: application/json
 
 {

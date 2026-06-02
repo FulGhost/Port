@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Header } from "../components/Header";
 import logImage from "../../public/images/iuliu-illes-rZiVfk-tg6Y-unsplash.jpg";
 
-export function HomePage({ visitorDetails, setVisitorDetails, getLogs }) {
+export function HomePage({ visitorDetails, setVisitorDetails, getLogs, data}) {
   const [currentTime, setCurrentTime] = useState("");
   const [showErrors, setShowErrors] = useState(false);
 
@@ -49,13 +49,21 @@ export function HomePage({ visitorDetails, setVisitorDetails, getLogs }) {
       return;
     }
 
+    const token = localStorage.getItem('token');
+
     await axios.post("/api/visitorlogs", {
       name: visitorDetails.name,
       organisation: visitorDetails.organisation,
       nature: visitorDetails.nature,
       contact: visitorDetails.contact,
       tag: visitorDetails.tag,
-    });
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
 
     await getLogs();
 
@@ -74,7 +82,7 @@ export function HomePage({ visitorDetails, setVisitorDetails, getLogs }) {
 
   return (
     <>
-      <Header />
+      <Header data={data}/>
 
       <div className="page-body grid grid-rows-2 md:grid-rows-1 md:grid-cols-[300px_1fr] lg:grid-cols-[500px_1fr] pl-2 pr-2">
         <div className="left-side h-145 mb-2">

@@ -23,7 +23,7 @@ export function VisitorLog({ visitorLogs = [], getLogs}) {
             <button
               className="rounded-sm font-mono text-[10px] sm:text-xs md:text-base w-full border h-9 cursor-pointer hover:bg-lime-200 active:bg-black active:text-white md:w-25 md:h-12"
               onClick={async () => {
-                await axios.put(`/api/visitorlogs/${visitorLog.id}`)
+                await axios.put(`/api/visitorlogs/${visitorLog.id}`,{},{headers: {Authorization: `Bearer ${localStorage.getItem("token")}`}})
                 getLogs()
               }}
             >

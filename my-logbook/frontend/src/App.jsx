@@ -17,13 +17,29 @@ export function App() {
     tag: "",
   });
 
+  const [organisationDetails, setOrganisationDetails] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
+
   //empty array that saves visitor details object
   const [visitorLogs, setVisitorLogs] = useState([]);
 
+  //state that gets the stored token
+  const [token, setToken] = useState(localStorage.getItem("token"));
+
+  // sate that gets data from auth response
+    const [data, setData] = useState({username: ""})
+
+
   const getLogs = async (date) => {
     const response = await axios.get("/api/visitorlogs", {
-    params: date ? { date } : {},
-  });
+      params: date ? { date } : {},
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      }
+    });
     setVisitorLogs(response.data);
   };
 
@@ -32,7 +48,28 @@ export function App() {
   //   getLogs();
   // }, []);
 
-  //states lifted up from homepage to app and passes as a property
+  if (!token) {
+    return (
+      <>
+        <Routes>
+          <Route
+            index
+            element={
+              <LandingPage
+                organisationDetails={organisationDetails}
+                setOrganisationDetails={setOrganisationDetails}
+                setData={setData}
+                onLogin={(token) => {
+                  localStorage.setItem("token", token);
+                  setToken(token);
+                }}
+              />
+            }
+          />
+        </Routes>
+      </>
+    );
+  }
   return (
     <>
       <Routes>
@@ -45,11 +82,25 @@ export function App() {
               visitorLogs={visitorLogs}
               setVisitorLogs={setVisitorLogs}
               getLogs={getLogs}
+              data={data}
             />
           }
         />
         <Route
-          path="visitor"
+          path="logpage"
+          element={
+            <HomePage
+              visitorDetails={visitorDetails}
+              setVisitorDetails={setVisitorDetails}
+              visitorLogs={visitorLogs}
+              setVisitorLogs={setVisitorLogs}
+              getLogs={getLogs}
+              data={data}
+            />
+          }
+        />
+        <Route
+          path="visitorlog"
           element={
             <VisitorPage
               visitorDetails={visitorDetails}
@@ -57,13 +108,14 @@ export function App() {
               visitorLogs={visitorLogs}
               setVisitorLogs={setVisitorLogs}
               getLogs={getLogs}
+              data={data}
             />
           }
         />
-        <Route path="landingpage" element={<LandingPage />}/>
       </Routes>
     </>
   );
 }
+//states lifted up from homepage to app and passes as a property
 
 export default App;
