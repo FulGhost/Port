@@ -2,10 +2,13 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Header } from "../components/Header";
 import logImage from "../../public/images/iuliu-illes-rZiVfk-tg6Y-unsplash.jpg";
+import { LoadingSpinner } from "../components/LoadingSpinner";
 
 export function HomePage({ visitorDetails, setVisitorDetails, getLogs, data}) {
   const [currentTime, setCurrentTime] = useState("");
-  const [showErrors, setShowErrors] = useState(false);
+  const [showErrors, setShowErrors] = useState(null);
+  const [loading, setLoading] = useState(false)
+  const [success, setSuccess] = useState(false)
 
   useEffect(() => {
     function updateTime() {
@@ -37,21 +40,14 @@ export function HomePage({ visitorDetails, setVisitorDetails, getLogs, data}) {
   // function passed to onClick in submit button
   // Adds visitor details object to visitor log array
   async function handleClick() {
-    setShowErrors(true);
-
-    if (
-      !visitorDetails.name ||
-      !visitorDetails.organisation ||
-      !visitorDetails.nature ||
-      !visitorDetails.contact ||
-      !visitorDetails.tag
-    ) {
-      return;
-    }
+    try {
+        setShowErrors(null);
+        setLoading(true)
+        setSuccess(false)
 
     const token = localStorage.getItem('token');
 
-    await axios.post("/api/visitorlogs", {
+     await axios.post("/api/visitorlogs", {
       name: visitorDetails.name,
       organisation: visitorDetails.organisation,
       nature: visitorDetails.nature,
@@ -76,8 +72,15 @@ export function HomePage({ visitorDetails, setVisitorDetails, getLogs, data}) {
       time: "",
       tag: "",
     });
+    setSuccess(true)
 
-    setShowErrors(false);
+    } catch (err) {
+      const message = err.response?.data?.message || "Something went wrong";
+      setShowErrors(message)
+    } finally {
+      setLoading(false)
+    }
+  
   }
 
   return (
@@ -111,11 +114,7 @@ export function HomePage({ visitorDetails, setVisitorDetails, getLogs, data}) {
                 Full Name <br />
                 <input
                   name="name"
-                  className={`border border-gray-300 lg:w-202 md:w-100 w-110 h-10 rounded-lg pl-3 ${
-                    showErrors && !visitorDetails.name
-                      ? "placeholder:text-red-500"
-                      : ""
-                  }`}
+                  className="border border-gray-300 lg:w-202 md:w-100 w-110 h-10 rounded-lg pl-3"
                   placeholder="Enter Your Name"
                   onChange={logInput}
                   value={visitorDetails.name}
@@ -128,11 +127,7 @@ export function HomePage({ visitorDetails, setVisitorDetails, getLogs, data}) {
                 Company or Organisation <br />
                 <input
                   name="organisation"
-                  className={`border border-gray-300 lg:w-202 md:w-100 w-110 h-10 rounded-lg pl-3 ${
-                    showErrors && !visitorDetails.organisation
-                      ? "placeholder:text-red-500"
-                      : ""
-                  }`}
+                  className="border border-gray-300 lg:w-202 md:w-100 w-110 h-10 rounded-lg pl-3"
                   placeholder="Which Company Are You From"
                   onChange={logInput}
                   value={visitorDetails.organisation}
@@ -147,11 +142,7 @@ export function HomePage({ visitorDetails, setVisitorDetails, getLogs, data}) {
                 Nature of Visit <br />
                 <input
                   name="nature"
-                  className={`border border-gray-300 lg:w-202 md:w-100 w-110 h-10 rounded-lg pl-3 ${
-                    showErrors && !visitorDetails.nature
-                      ? "placeholder:text-red-500"
-                      : ""
-                  }`}
+                  className="border border-gray-300 lg:w-202 md:w-100 w-110 h-10 rounded-lg pl-3"
                   placeholder="Nature of Visit"
                   onChange={logInput}
                   value={visitorDetails.nature}
@@ -165,11 +156,7 @@ export function HomePage({ visitorDetails, setVisitorDetails, getLogs, data}) {
                 <br />
                 <input
                   name="contact"
-                  className={`border border-gray-300 lg:w-100 md:w-100 w-110 h-10 rounded-lg pl-3 ${
-                    showErrors && !visitorDetails.contact
-                      ? "placeholder:text-red-500"
-                      : ""
-                  }`}
+                  className="border border-gray-300 lg:w-100 md:w-100 w-110 h-10 rounded-lg pl-3"
                   placeholder="contact"
                   onChange={logInput}
                   value={visitorDetails.contact}
@@ -194,11 +181,7 @@ export function HomePage({ visitorDetails, setVisitorDetails, getLogs, data}) {
                 <br />
                 <input
                   name="tag"
-                  className={`border border-gray-300 lg:w-202 md:w-100 w-110 h-10 rounded-lg pl-3 ${
-                    showErrors && !visitorDetails.tag
-                      ? "placeholder:text-red-500"
-                      : ""
-                  }`}
+                  className="border border-gray-300 lg:w-202 md:w-100 w-110 h-10 rounded-lg pl-3" 
                   placeholder="Tag"
                   onChange={logInput}
                   value={visitorDetails.tag}
@@ -212,10 +195,16 @@ export function HomePage({ visitorDetails, setVisitorDetails, getLogs, data}) {
               <button
                 className="bg-cyan-700 mt-2 h-10 text-white rounded-lg lg:w-190 md:w-100 w-110 hover:opacity-90 active:bg-cyan-800"
                 onClick={handleClick}
+                disabled={loading}
               >
-                Submit Check-in
+                {loading && <LoadingSpinner />}
+                {loading ? "Submitting Logs" : "Submit Logs"}
               </button>
             </div>
+            <div>
+              {success && <p className="text-green-600">✓ Submitted successfully</p>}
+              {showErrors && <p className="text-red-600">{showErrors}</p>}
+              </div>
           </div>
         </div>
       </div>
