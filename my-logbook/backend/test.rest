@@ -48,3 +48,7 @@ Content-Type: application/json
   "email": "redorganisation@example.com",
   "password": "Yabadabado"
 }
+
+### Get from dashboard
+GET http://localhost:9000/api/dashboard
+Authorization: Bearer {{token}}

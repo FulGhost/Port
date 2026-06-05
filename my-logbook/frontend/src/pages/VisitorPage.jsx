@@ -6,7 +6,7 @@ import { CheckBoxes } from "../components/Checkboxes";
 import { SearchBar } from "../components/SearchBar";
 
 // VisitorLogs is passed as a property to allow Visitorlog to use the prop
-export function VisitorPage({ visitorLogs, setVisitorLogs, getLogs, data }) {
+export function VisitorPage({ visitorLogs, setVisitorLogs, getLogs, data, onLogout }) {
   const [selectedFilter, setSelectedFilter] = useState("all");
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [searchText, setSearchText] = useState("");
@@ -53,7 +53,7 @@ export function VisitorPage({ visitorLogs, setVisitorLogs, getLogs, data }) {
 
   return (
     <>
-      <Header data={data}/>
+      <Header data={data} onLogout={onLogout}/>
 
       <div className="page-body flex flex-col md:flex-row">
         <div className="left-side h-auto w-full p-2 md:h-145 md:w-75">

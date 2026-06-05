@@ -1,10 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Header } from "../components/Header";
-import logImage from "../../public/images/iuliu-illes-rZiVfk-tg6Y-unsplash.jpg";
+import logImage from "../../public/images/logbackgrnd.jpg";
+// import log_animation from '../../public/videos/log_animation.mp4'
 import { LoadingSpinner } from "../components/LoadingSpinner";
 
-export function HomePage({ visitorDetails, setVisitorDetails, getLogs, data}) {
+export function HomePage({ visitorDetails, setVisitorDetails, getLogs, data, onLogout}) {
   const [currentTime, setCurrentTime] = useState("");
   const [showErrors, setShowErrors] = useState(null);
   const [loading, setLoading] = useState(false)
@@ -85,7 +86,7 @@ export function HomePage({ visitorDetails, setVisitorDetails, getLogs, data}) {
 
   return (
     <>
-      <Header data={data}/>
+      <Header data={data} onLogout={onLogout}/>
 
       <div className="page-body grid grid-rows-2 md:grid-rows-1 md:grid-cols-[300px_1fr] lg:grid-cols-[500px_1fr] pl-2 pr-2">
         <div className="left-side h-145 mb-2">
@@ -101,7 +102,7 @@ export function HomePage({ visitorDetails, setVisitorDetails, getLogs, data}) {
                 into our corporate facility.
               </p>
               <div>
-                <img src={logImage} className="h-80 w-110 rounded-sm" />
+                < img src={logImage} className="h-80 w-110 rounded-sm" />
               </div>
             </div>
           </div>

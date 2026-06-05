@@ -53,7 +53,7 @@ export function App() {
       <>
         <Routes>
           <Route
-            index
+            path="*"
             element={
               <LandingPage
                 organisationDetails={organisationDetails}
@@ -83,19 +83,11 @@ export function App() {
               setVisitorLogs={setVisitorLogs}
               getLogs={getLogs}
               data={data}
-            />
-          }
-        />
-        <Route
-          path="logpage"
-          element={
-            <HomePage
-              visitorDetails={visitorDetails}
-              setVisitorDetails={setVisitorDetails}
-              visitorLogs={visitorLogs}
-              setVisitorLogs={setVisitorLogs}
-              getLogs={getLogs}
-              data={data}
+              onLogout={() => {
+                localStorage.removeItem("token")
+                setToken(null)
+                window.location.reload()
+              }}
             />
           }
         />
@@ -109,6 +101,11 @@ export function App() {
               setVisitorLogs={setVisitorLogs}
               getLogs={getLogs}
               data={data}
+              onLogout={() => {
+                localStorage.removeItem("token")
+                setToken(null)
+                window.location.reload()
+              }}
             />
           }
         />
