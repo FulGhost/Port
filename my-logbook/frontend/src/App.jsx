@@ -4,7 +4,9 @@ import { Routes, Route } from "react-router";
 import { HomePage } from "./pages/HomePage";
 import { VisitorPage } from "./pages/VisitorPage";
 import { LandingPage } from "./pages/LandingPage";
+import { ResetPassword } from "./pages/ResetPasswordPage";
 import "./App.css";
+
 
 export function App() {
   //Empty object that saves visitor details
@@ -52,6 +54,12 @@ export function App() {
     return (
       <>
         <Routes>
+          <Route
+            path="resetpassword/:resetToken"
+            element={
+              <ResetPassword/>
+            }
+          />
           <Route
             path="*"
             element={

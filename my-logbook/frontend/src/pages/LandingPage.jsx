@@ -1,20 +1,9 @@
 import axios from 'axios'
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Header } from '../components/Header';
 import { LoadingSpinner } from '../components/LoadingSpinner';
+import { Link } from 'react-router';
 
-/**
- * AuthenticationGateway - Artistic Edition
- * 
- * A high-fidelity authentication gateway featuring an artistic, textured background.
- * Built with React and Tailwind CSS.
- * 
- * Features:
- * - Tabbed interface for Sign In / Create Account
- * - Artistic ambient background integration
- * - Glassmorphic form container for depth and readability
- * - Responsive layout for desktop and mobile
- */
 
 //Lifted up states from app.jsx
 export function LandingPage({organisationDetails, setOrganisationDetails, onLogin, setData}) {
@@ -22,6 +11,20 @@ export function LandingPage({organisationDetails, setOrganisationDetails, onLogi
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [isSent, setIsSent] = useState(false)
+  const [verifiedMessage, setVerifiedMessage] = useState(null);
+  const [sending, setSending] = useState(false)
+
+  //Displays verified if org verifies mail
+    useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("verified") === "true") {
+      setVerifiedMessage("Email verified successfully. You can now log in.");
+      // clean up the URL
+      window.history.replaceState({}, "", "/");
+    }
+  }, []);
 
   // function passed into onChange in various inputs to update typed texts
   function OrgInput(event) {
@@ -66,8 +69,40 @@ const response = await axios.post('/auth/signup', {
   
 }
 
+ async function handlereset() {
+  try {
+    setIsSent(false)
+    setLoading(true)
+    await axios.post('/auth/forgot-password', {email: organisationDetails.email})
+    setIsSent(true)
+  } catch (err) {
+    const message = err.response?.data?.message || "Something went wrong";
+    setError(message)
+  } finally {
+    setLoading(false)
+  }
+
+}
+
+async function resendVerificaton() {
+  try {
+    setSending(true)
+     setIsSent(false)
+  await axios.post('/auth/resend-verification', {email: organisationDetails.email})
+  setIsSent(true)
+  } catch (err) {
+    const message = err.response?.data?.message || "Something went wrong"
+    setError(message)
+  } finally {
+    setSending(false)
+  }
+}
+
   return (
     <div className="h-[calc(100vh-4.75rem)] overflow-hidden flex flex-col text-slate-900 bg-transparent">
+      {verifiedMessage && (
+        <p style={{ color: "green" }}>{verifiedMessage}</p>
+      )}
       
       {/* Main Authentication Container */}
       <main className="flex-1 min-h-0 flex items-center justify-center px-4">
@@ -131,7 +166,7 @@ const response = await axios.post('/auth/signup', {
               <div className="flex justify-between items-center mb-2">
                 <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400">Password</label>
                 {activeTab === 'signin' && (
-                  <a href="#" className="text-[10px] font-bold uppercase tracking-widest text-slate-500 hover:text-[#002c53] transition-colors">Forgot?</a>
+                  <a href="#" onClick={handlereset} disabled={isLoading} className="text-[10px] font-bold uppercase tracking-widest text-slate-500 hover:text-[#002c53] transition-colors">{isLoading && <LoadingSpinner/>}{loading ? "Sending..." : "Forgot?"}</a>
                 )}
               </div>
               <input 
@@ -153,8 +188,10 @@ const response = await axios.post('/auth/signup', {
     : activeTab === "signin"
       ? "Access Logbook"
       : "Initialize Account"}
-              
             </button>
+            <a disabled={isLoading} onClick={resendVerificaton} className="text-sm hover:underline cursor-pointer ">{sending && <LoadingSpinner/>}
+            {sending ? 'Sending...' : 'Resend verification link?'}
+            </a>
           </form>
 
           {/* Security Indicator Icons */}
@@ -165,8 +202,9 @@ const response = await axios.post('/auth/signup', {
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
           </div>
           <div>
-            {error && <p className="text-red-600">{error}</p>}
-            {success && <p>Logged in successfully</p>}
+            {error && <p className="text-red-600 ml-3 mt-2">{error}</p>}
+            {success && <p className="ml-3 mt-2">Logged in successfully</p>}
+            {isSent && <p className="text-green-400 ml-3 mt-2">✓ Email is sent</p> }
           </div>
         </div>
       </main>

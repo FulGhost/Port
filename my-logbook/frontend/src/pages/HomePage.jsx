@@ -203,8 +203,8 @@ export function HomePage({ visitorDetails, setVisitorDetails, getLogs, data, onL
               </button>
             </div>
             <div>
-              {success && <p className="text-green-600">✓ Submitted successfully</p>}
-              {showErrors && <p className="text-red-600">{showErrors}</p>}
+              {success && <p className="text-green-600 ml-3">✓ Submitted successfully</p>}
+              {showErrors && <p className="text-red-600 ml-3">{showErrors}</p>}
               </div>
           </div>
         </div>
