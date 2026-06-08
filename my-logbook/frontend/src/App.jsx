@@ -5,6 +5,8 @@ import { HomePage } from "./pages/HomePage";
 import { VisitorPage } from "./pages/VisitorPage";
 import { LandingPage } from "./pages/LandingPage";
 import { ResetPassword } from "./pages/ResetPasswordPage";
+import { QrCode } from "./pages/QrCode";
+import { VisitorScan } from "./pages/VisitorScan";
 import "./App.css";
 
 
@@ -32,7 +34,7 @@ export function App() {
   const [token, setToken] = useState(localStorage.getItem("token"));
 
   // sate that gets data from auth response
-    const [data, setData] = useState({username: ""})
+    const [data, setData] = useState({username: localStorage.getItem("username") || ""})
 
 
   const getLogs = async (date) => {
@@ -44,6 +46,8 @@ export function App() {
     });
     setVisitorLogs(response.data);
   };
+
+  const [organisationId, setOrganisationId] = useState(localStorage.getItem("organisationId") || null)
 
   // useEffect(() => {
   //     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -60,6 +64,10 @@ export function App() {
               <ResetPassword/>
             }
           />
+          <Route 
+          path="scan/:organisationId"
+           element={<VisitorScan/>}
+           />
           <Route
             path="*"
             element={
@@ -71,6 +79,7 @@ export function App() {
                   localStorage.setItem("token", token);
                   setToken(token);
                 }}
+                setorganisationId={setOrganisationId}
               />
             }
           />
@@ -93,6 +102,8 @@ export function App() {
               data={data}
               onLogout={() => {
                 localStorage.removeItem("token")
+                localStorage.removeItem("username")
+                localStorage.removeItem("organisationId")
                 setToken(null)
                 window.location.reload()
               }}
@@ -111,12 +122,15 @@ export function App() {
               data={data}
               onLogout={() => {
                 localStorage.removeItem("token")
+                localStorage.removeItem("username")
+                localStorage.removeItem("organisationId")
                 setToken(null)
                 window.location.reload()
               }}
             />
           }
         />
+        <Route path="/qr-code-generator" element={<QrCode organisationId={organisationId}/>}/>
       </Routes>
     </>
   );

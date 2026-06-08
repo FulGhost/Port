@@ -6,7 +6,7 @@ import { Link } from 'react-router';
 
 
 //Lifted up states from app.jsx
-export function LandingPage({organisationDetails, setOrganisationDetails, onLogin, setData}) {
+export function LandingPage({organisationDetails, setOrganisationDetails, onLogin, setData, setOrganisationId}) {
   const [activeTab, setActiveTab] = useState('signin');
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
@@ -48,7 +48,6 @@ const response = await axios.post('/auth/signup', {
   email: organisationDetails.email,
   password: organisationDetails.password
  })
- setData({username: response.data.organisation.username})
  onLogin(response.data.token);
  return;
   }
@@ -57,8 +56,11 @@ const response = await axios.post('/auth/signup', {
     email: organisationDetails.email,
     password: organisationDetails.password
   })
-  setData({username: response.data.organisation.username})
+  localStorage.setItem("username",response.data.organisation.username)
+  setData({username:response.data.organisation.username})
  onLogin(response.data.token)
+ localStorage.setItem("organisationId",response.data.organisation.id)
+ setOrganisationId(response.data.organisation.id)
  setSuccess(true)
  } catch (err) {
   const message = err.response?.data?.message || "Something went wrong";

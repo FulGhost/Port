@@ -2,6 +2,7 @@ import axios from 'axios';
 import {useState} from 'react';
 import dayjs from 'dayjs'
 import relativeTime from "dayjs/plugin/relativeTime";
+import { useNavigate } from 'react-router';
 
 export function Dashboard({onLogout}) {
   const [showPanel, setShowPanel] = useState(false)
@@ -13,6 +14,8 @@ export function Dashboard({onLogout}) {
   signedOut: 0,
   lastSync: ""
   })
+
+  const navigate = useNavigate();
 
  async function dashlog() {
   const response = await axios.get('/api/dashboard', {headers: {
@@ -28,6 +31,10 @@ export function Dashboard({onLogout}) {
 
 
  dayjs.extend(relativeTime);
+
+ function qrCodeGenerator() {
+  navigate('/qr-code-generator')
+ }
  
 
   return (
@@ -84,6 +91,11 @@ export function Dashboard({onLogout}) {
               <div className="flex items-center justify-between">
                 <span>Last sync</span>
                 <span className="font-bold text-slate-800">{dayjs(dashData.lastSync).fromNow()}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span>Generate Qr code</span>
+                <span className="font-bold text-slate-800"><button className="border border-gray-400 w-12 rounded-lg bg-gray-400 cursor-pointer hover:opacity-80 active:opacity-60"
+                onClick={qrCodeGenerator}>Qr</button></span>
               </div>
             </div>
           </div>

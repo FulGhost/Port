@@ -45,10 +45,13 @@ POST http://localhost:9000/auth/login
 Content-Type: application/json
 
 {
-  "email": "redorganisation@example.com",
-  "password": "Yabadabado"
+  "email": "andyfideljude@gmail.com",
+  "password": "Poofman67"
 }
 
 ### Get from dashboard
 GET http://localhost:9000/api/dashboard
 Authorization: Bearer {{token}}
+
+### Scan page
+GET http://localhost:9000/auth/scan/60e8bb8a-2a29-4b5b-ad78-5eb3c4dd669c

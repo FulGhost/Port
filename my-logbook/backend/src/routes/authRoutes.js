@@ -103,7 +103,7 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({message: 'Invalid email or password'})
     }
 
-    const token = jwt.sign({organisationId: organisation.id}, getJwtSecret(), {expiresIn: '1h'})
+    const token = jwt.sign({organisationId: organisation.id}, getJwtSecret(), {expiresIn: '120h'})
     res.json({
       token,
       organisation: {
@@ -289,6 +289,36 @@ router.post("/reset-password", async (req, res) => {
     res.status(500).json({ message: "Something went wrong. Please try again." });
   }
 });
+
+
+router.get('/scan/:organisationId', async (req, res) => {
+  try {
+    const { organisationId } = req.params;
+
+    const organisation = await prisma.organisation.findUnique({
+      where: {
+        id: organisationId
+      }
+    });
+
+    if (!organisation) {
+      return res.status(400).json({message: "Invalid Qr Code"})
+    }
+
+       // generate temp token with type: visitor
+    const tempToken = jwt.sign({organisationId: organisation.id, type: "Visitor"}, getJwtSecret(), {expiresIn: '2h'});
+
+    res.status(200).json({
+      tempToken,
+      organisation: {
+        username: organisation.username,
+      }
+    });
+  } catch (error) {
+    console.error("QR scan error:", error);
+    res.status(500).json({ message: "Could not process QR code" });
+  }
+})
 
 export default router;
 

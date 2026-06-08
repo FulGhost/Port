@@ -11,7 +11,6 @@ export function ResetPassword() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  console.log(`Token:${token}`)
 
   async function handleSubmit() {
     if (!password)              return setError("Please enter a new password");
