@@ -31,7 +31,7 @@ export function App() {
   const [visitorLogs, setVisitorLogs] = useState([]);
 
   //state that gets the stored token
-  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [token, setToken] = useState(localStorage.getItem("token") || localStorage.getItem("tempToken"));
 
   // sate that gets data from auth response
     const [data, setData] = useState({username: localStorage.getItem("username") || ""})

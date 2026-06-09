@@ -38,6 +38,9 @@ export function HomePage({ visitorDetails, setVisitorDetails, getLogs, data, onL
     });
   }
 
+  const token = localStorage.getItem('token');
+  const tempToken = localStorage.getItem("tempToken")
+
   // function passed to onClick in submit button
   // Adds visitor details object to visitor log array
   async function handleClick() {
@@ -46,7 +49,8 @@ export function HomePage({ visitorDetails, setVisitorDetails, getLogs, data, onL
         setLoading(true)
         setSuccess(false)
 
-    const token = localStorage.getItem('token');
+    const activeToken = token || tempToken
+    
 
      await axios.post("/api/visitorlogs", {
       name: visitorDetails.name,
@@ -57,7 +61,7 @@ export function HomePage({ visitorDetails, setVisitorDetails, getLogs, data, onL
     },
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${activeToken}`,
       }
     }
   );

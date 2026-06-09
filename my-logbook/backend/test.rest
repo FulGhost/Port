@@ -1,8 +1,9 @@
 @token = {{login.response.body.token}}
+@tempToken = {{scan.response.body.tempToken}}
 
 ### GET from /API/VISITORS
 GET http://localhost:9000/api/visitorlogs
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tempToken}}
 
 ### POST to /API/VISITORS
 POST http://localhost:9000/api/visitorlogs
@@ -54,4 +55,5 @@ GET http://localhost:9000/api/dashboard
 Authorization: Bearer {{token}}
 
 ### Scan page
+# @name scan
 GET http://localhost:9000/auth/scan/60e8bb8a-2a29-4b5b-ad78-5eb3c4dd669c
