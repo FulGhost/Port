@@ -15,6 +15,7 @@ export function LandingPage({organisationDetails, setOrganisationDetails, onLogi
   const [isSent, setIsSent] = useState(false)
   const [verifiedMessage, setVerifiedMessage] = useState(null);
   const [sending, setSending] = useState(false)
+  const [successMessage, setSuccessMessage] = useState(null)
 
   //Displays verified if org verifies mail
     useEffect(() => {
@@ -43,12 +44,14 @@ async function handleAuth() {
     setError(null)
     setSuccess(false)
     if (activeTab === 'signup') {
-const response = await axios.post('/auth/signup', {
+const { data } = await axios.post('/auth/signup', {
   username: organisationDetails.username,
   email: organisationDetails.email,
   password: organisationDetails.password
  })
- onLogin(response.data.token);
+ onLogin(data.token);
+ setSuccess(true)
+ setSuccessMessage(data?.message)
  return;
   }
 
@@ -90,8 +93,9 @@ async function resendVerificaton() {
   try {
     setSending(true)
      setIsSent(false)
-  await axios.post('/auth/resend-verification', {email: organisationDetails.email})
+ const {data} =  await axios.post('/auth/resend-verification', {email: organisationDetails.email})
   setIsSent(true)
+  setSuccessMessage(data?.message)
   } catch (err) {
     const message = err.response?.data?.message || "Something went wrong"
     setError(message)
@@ -103,7 +107,11 @@ async function resendVerificaton() {
   return (
     <div className="h-[calc(100vh-4.75rem)] overflow-hidden flex flex-col text-slate-900 bg-transparent">
       {verifiedMessage && (
-        <p style={{ color: "green" }}>{verifiedMessage}</p>
+        <div className="mb-4 flex justify-end">
+          <p className="max-w-xs rounded-2xl bg-white px-4 py-3 text-right text-sm font-semibold text-emerald-700 shadow-sm shadow-slate-200">
+            {verifiedMessage}
+          </p>
+        </div>
       )}
       
       {/* Main Authentication Container */}
@@ -121,7 +129,7 @@ async function resendVerificaton() {
             Institutional Access
           </h1>
           <p className="mb-3 text-center text-sm font-medium text-slate-500">
-            Secure entry to the Sovereign Asset Logbook
+            Secure entry to the Andy-Fidel Logbook
           </p>
 
           {/* Auth Tabs */}
@@ -205,8 +213,8 @@ async function resendVerificaton() {
           </div>
           <div>
             {error && <p className="text-red-600 ml-3 mt-2">{error}</p>}
-            {success && <p className="ml-3 mt-2">Logged in successfully</p>}
-            {isSent && <p className="text-green-400 ml-3 mt-2">✓ Email is sent</p> }
+            {success && <p className="ml-3 mt-2 text-green-400">{successMessage}</p>}
+            {isSent && <p className="text-green-400 ml-3 mt-2">{successMessage}</p> }
           </div>
         </div>
       </main>
@@ -215,7 +223,7 @@ async function resendVerificaton() {
       <footer className="w-full px-4 py-3 border-t border-slate-200/50 bg-white/30 backdrop-blur-md">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
           <p className="text-xs font-medium text-slate-500">
-            &copy; 2024 Sovereign Logbook. Institutional Grade Asset Documentation.
+            &copy; 2024 Andy-Fidel Logbook. Institutional Grade Asset Documentation.
           </p>
           <div className="flex gap-6 text-[10px] font-bold uppercase tracking-widest text-slate-400">
             <a href="#" className="hover:text-[#002c53] transition-colors">Privacy</a>

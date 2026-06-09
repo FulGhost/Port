@@ -104,6 +104,7 @@ export function App() {
                 localStorage.removeItem("token")
                 localStorage.removeItem("username")
                 localStorage.removeItem("organisationId")
+                localStorage.removeItem("tempToken")
                 setToken(null)
                 window.location.reload()
               }}
@@ -124,6 +125,7 @@ export function App() {
                 localStorage.removeItem("token")
                 localStorage.removeItem("username")
                 localStorage.removeItem("organisationId")
+                localStorage.removeItem("tempToken")
                 setToken(null)
                 window.location.reload()
               }}

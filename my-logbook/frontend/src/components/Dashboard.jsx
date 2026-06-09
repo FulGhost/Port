@@ -45,6 +45,8 @@ async function handleRefresh() {
  function qrCodeGenerator() {
   navigate('/qr-code-generator')
  }
+
+ const orgname = localStorage.getItem("username")
  
 
   return (
@@ -64,7 +66,7 @@ async function handleRefresh() {
           <div className="mb-4 flex items-start justify-between gap-3 border-b border-slate-100 pb-3">
             <div>
               <p className="text-xs font-bold uppercase tracking-widest text-slate-400">Dashboard</p>
-              <h2 className="text-lg font-extrabold tracking-tight text-blue-950">Andy-Fidel Portal</h2>
+              <h2 className="text-lg font-extrabold tracking-tight text-blue-950">{orgname} Portal</h2>
             </div>
             <button
               className={`ml-10 flex items-center justify-center w-8 h-8 rounded-md border border-gray-200 bg-white text-slate-700 shadow-sm transition-transform duration-200 hover:scale-105 ${refreshing ? 'cursor-wait opacity-80' : 'hover:opacity-95'}`}
@@ -111,7 +113,7 @@ async function handleRefresh() {
               <div className="flex items-center justify-between">
                 <span>Generate Qr code</span>
                 <span className="font-bold text-slate-800"><button className="border border-gray-400 w-12 rounded-lg bg-gray-400 cursor-pointer hover:opacity-80 active:opacity-60"
-                onClick={qrCodeGenerator}>Qr</button></span>
+                onClick={qrCodeGenerator}>⌘</button></span>
               </div>
             </div>
           </div>
