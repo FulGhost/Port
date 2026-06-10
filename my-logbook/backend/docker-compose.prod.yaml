@@ -9,8 +9,6 @@ services:
       DATABASE_URL: ${RDS_DATABASE_URL:?Set RDS_DATABASE_URL to your RDS PostgreSQL connection string}
       NODE_ENV: production
       PORT: 9000
-    ports:
-     - "80:9000"
 
   frontend:
     build:
