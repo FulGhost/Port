@@ -13,20 +13,31 @@ export function VisitorScan() {
   useEffect(() => {
     async function handleScan() {
       try {
-        const response = await axios.get(`/scan/:${organisationId}`);
-
-        localStorage.setItem("tempToken", response.data.tempToken);
-        setOrgName(response.data.organisationName);
-
-        setTimeout(() => navigate("/"), 1500);
+          // Call the backend scan endpoint. Backend returns a short-lived
+          // `tempToken` for visitors along with the organisation name.
+          const response = await axios.get(`/auth/scan/${organisationId}`);
+  
+          // Only write `tempToken` when the backend actually returns one.
+          if (response.data?.tempToken) {
+            localStorage.setItem("tempToken", response.data.tempToken);
+            // Optionally store organisation name for visitor UI
+            localStorage.setItem("visitorOrgName", response.data.organisation.username);
+          }
+  
+          setOrgName(response.data.organisation.username);
+  
+          // Briefly show welcome then navigate back to landing/home.
+          setTimeout(() => navigate("/"), 1500);
       } catch (err) {
-        setError(err.response?.data?.message || "Invalid QR code");
+        setError(err.response?.data?.message || err.message || "Invalid QR code");
       } finally {
         setLoading(false);
       }
     }
     handleScan();
   }, [organisationId, navigate]);
+
+  localStorage.setItem("visitorOrgName", orgName)
 
   if (loading) {
     return (

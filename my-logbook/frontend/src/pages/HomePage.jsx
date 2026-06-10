@@ -4,6 +4,7 @@ import { Header } from "../components/Header";
 import logImage from "../../public/images/logbackgrnd.jpg";
 // import log_animation from '../../public/videos/log_animation.mp4'
 import { LoadingSpinner } from "../components/LoadingSpinner";
+import { getValidAuthToken } from "../utils/jwtDecoder.js";
 
 export function HomePage({ visitorDetails, setVisitorDetails, getLogs, data, onLogout}) {
   const [currentTime, setCurrentTime] = useState("");
@@ -38,18 +39,18 @@ export function HomePage({ visitorDetails, setVisitorDetails, getLogs, data, onL
     });
   }
 
-  const token = localStorage.getItem('token');
-  const tempToken = localStorage.getItem("tempToken")
-
   // function passed to onClick in submit button
   // Adds visitor details object to visitor log array
+  // Note: we use `getValidAuthToken()` so expired tokens are removed
+  // and we prefer a full admin token when available, otherwise the
+  // temporary visitor token from scanning is used.
   async function handleClick() {
     try {
         setShowErrors(null);
         setLoading(true)
         setSuccess(false)
 
-    const activeToken = token || tempToken
+    const activeToken = getValidAuthToken();
     
 
      await axios.post("/api/visitorlogs", {

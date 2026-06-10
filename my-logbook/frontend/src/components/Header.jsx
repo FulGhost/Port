@@ -3,12 +3,18 @@ import { Dashboard } from './Dashboard';
 import "./Header.css";
 
 export function Header({data, onLogout}) {
+  // Determine whether the user is a temporary visitor (only has tempToken).
+  // If `hasTempTokenOnly` is true we hide admin-only controls like the
+  // dashboard and show a visitor-friendly greeting instead.
+  const hasTempTokenOnly = !!localStorage.getItem("tempToken") && !localStorage.getItem("token");
+  const visitorOrgName = localStorage.getItem("visitorOrgName");
+
   return (
     <>
       <nav className="bg-white/30 backdrop-blur-xl border border-white/40 flex justify-between items-center p-6 z-50 fixed top-0 w-full">
           <div className=" left-side ml-10 text-xl font-bold tracking-tighter text-blue-950">
-            <Dashboard onLogout={onLogout}/>
-            Hello{" "}
+            {!hasTempTokenOnly && <Dashboard onLogout={onLogout}/>} 
+            {hasTempTokenOnly ? `Welcome to ${visitorOrgName}` : <>Hello{" "}</>}
             <span className="inline-block animate-pulse bg-gradient-to-r from-cyan-500 via-violet-500 to-fuchsia-500 bg-clip-text font-black text-transparent drop-shadow-sm transition-transform duration-300 hover:scale-110">
               {data.username}
             </span>

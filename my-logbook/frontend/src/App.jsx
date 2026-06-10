@@ -7,6 +7,7 @@ import { LandingPage } from "./pages/LandingPage";
 import { ResetPassword } from "./pages/ResetPasswordPage";
 import { QrCode } from "./pages/QrCode";
 import { VisitorScan } from "./pages/VisitorScan";
+import { getValidAuthToken } from "./utils/jwtDecoder.js";
 import "./App.css";
 
 
@@ -30,18 +31,25 @@ export function App() {
   //empty array that saves visitor details object
   const [visitorLogs, setVisitorLogs] = useState([]);
 
-  //state that gets the stored token
+  // State that reads whichever auth token exists in localStorage.
+  // - `token` is the full organisation auth token (admin)
+  // - `tempToken` is a short-lived visitor token created by scanning a QR
+  // We initialise `token` state using whichever exists so the app
+  // can render the appropriate route set immediately.
   const [token, setToken] = useState(localStorage.getItem("token") || localStorage.getItem("tempToken"));
 
   // sate that gets data from auth response
     const [data, setData] = useState({username: localStorage.getItem("username") || ""})
 
 
+  // Fetch visitor logs from the backend.
+  // Uses `getValidAuthToken()` to ensure expired tokens are cleared
+  // and to choose either `token` or `tempToken` as appropriate.
   const getLogs = async (date) => {
     const response = await axios.get("/api/visitorlogs", {
       params: date ? { date } : {},
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`
+        Authorization: `Bearer ${getValidAuthToken()}`
       }
     });
     setVisitorLogs(response.data);
@@ -54,6 +62,10 @@ export function App() {
   //   getLogs();
   // }, []);
 
+  
+
+  
+
   if (!token) {
     return (
       <>
@@ -65,7 +77,7 @@ export function App() {
             }
           />
           <Route 
-          path="scan/:organisationId"
+          path="/scan/:organisationId"
            element={<VisitorScan/>}
            />
           <Route
@@ -87,7 +99,9 @@ export function App() {
       </>
     );
   }
-  return (
+
+  if (token) {
+    return (
     <>
       <Routes>
         <Route
@@ -136,6 +150,7 @@ export function App() {
       </Routes>
     </>
   );
+  }
 }
 //states lifted up from homepage to app and passes as a property
 

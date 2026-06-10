@@ -17,13 +17,30 @@ export function LandingPage({organisationDetails, setOrganisationDetails, onLogi
   const [sending, setSending] = useState(false)
   const [successMessage, setSuccessMessage] = useState(null)
 
-  //Displays verified if org verifies mail
-    useEffect(() => {
+  // Reload once when the landing page loads and a token already exists
+  useEffect(() => {
     const params = new URLSearchParams(window.location.search);
+    const token = localStorage.getItem("token") || localStorage.getItem("tempToken");
+    const hasReloaded = params.get("landingReloaded") === "true";
+
     if (params.get("verified") === "true") {
       setVerifiedMessage("Email verified successfully. You can now log in.");
-      // clean up the URL
-      window.history.replaceState({}, "", "/");
+    }
+
+    // Reloads the page if token is present
+    if (token && !hasReloaded) {
+      params.set("landingReloaded", "true");
+      const newSearch = params.toString();
+      window.history.replaceState({}, "", `${window.location.pathname}?${newSearch}`);
+      window.location.reload();
+      return;
+    }
+
+    if (hasReloaded) {
+      params.delete("landingReloaded");
+      const newSearch = params.toString();
+      const newUrl = newSearch ? `${window.location.pathname}?${newSearch}` : window.location.pathname;
+      window.history.replaceState({}, "", newUrl);
     }
   }, []);
 

@@ -18,6 +18,8 @@ export function Dashboard({onLogout}) {
 
   const navigate = useNavigate();
 
+ // Fetch dashboard metrics from the backend (admin-only endpoint).
+ // This call requires a full admin `token` (not the temp visitor token).
  async function dashlog() {
   const response = await axios.get('/api/dashboard', {headers: {
     Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -42,6 +44,8 @@ async function handleRefresh() {
 
  dayjs.extend(relativeTime);
 
+ // Navigate to the QR code generator view used by admins to create
+ // organisation-specific scan links.
  function qrCodeGenerator() {
   navigate('/qr-code-generator')
  }

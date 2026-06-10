@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getValidAuthToken } from '../utils/jwtDecoder.js';
 
 export function VisitorLog({ visitorLogs = [], getLogs}) {
   return (
@@ -22,8 +23,11 @@ export function VisitorLog({ visitorLogs = [], getLogs}) {
             <p className="text-[10px] sm:text-xs md:text-lg font-mono text-center md:text-left min-w-0 break-words leading-tight md:w-10">{visitorLog.tag}</p>
             <button
               className="rounded-sm font-mono text-[10px] sm:text-xs md:text-base w-full border h-9 cursor-pointer hover:bg-lime-200 active:bg-black active:text-white md:w-25 md:h-12"
+                // When toggling status we send a protected PUT request.
+                // Use `getValidAuthToken()` to ensure we attach a valid token
+                // (cleans expired tokens and prefers admin token over temp).
               onClick={async () => {
-                await axios.put(`/api/visitorlogs/${visitorLog.id}`,{},{headers: {Authorization: `Bearer ${localStorage.getItem("token")}`}})
+                await axios.put(`/api/visitorlogs/${visitorLog.id}`,{},{headers: {Authorization: `Bearer ${getValidAuthToken()}`}})
                 getLogs()
               }}
             >

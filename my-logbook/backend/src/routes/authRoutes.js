@@ -306,7 +306,7 @@ router.get('/scan/:organisationId', async (req, res) => {
     }
 
        // generate temp token with type: visitor
-    const tempToken = jwt.sign({organisationId: organisation.id, type: "Visitor"}, getJwtSecret(), {expiresIn: '2h'});
+    const tempToken = jwt.sign({organisationId: organisation.id, type: "Visitor"}, getJwtSecret(), {expiresIn: '15m'});
 
     res.status(200).json({
       tempToken,
