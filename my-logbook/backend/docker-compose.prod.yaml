@@ -10,7 +10,7 @@ services:
       NODE_ENV: production
       PORT: 9000
     ports:
-     - "80:9000 "
+     - "80:9000"
 
   frontend:
     build:
